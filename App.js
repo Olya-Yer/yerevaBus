@@ -20,9 +20,24 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  constructor(props){
+    super(props);
+    this.state = {
+      userLocation: null,
+    }
+    this.getUserLocationHandler = this.getUserLocationHandler.bind(this)
+  }
   getUserLocationHandler = () => {
     navigator.geolocation.getCurrentPosition(position =>{
       console.log("position",position)
+      this.setState({
+        userLocation: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }
+      })
     },err => {
       console.log("err",err)
     }
@@ -34,7 +49,7 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <FetchLocation onGetLocation={this.getUserLocationHandler}/>
-        <UsersMap />
+        <UsersMap userLocation={this.state.userLocation} />
       </View>
     );
   }
