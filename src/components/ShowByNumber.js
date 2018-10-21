@@ -1,0 +1,1 @@
+﻿import React,{Component} from 'react';import { Platform, StyleSheet,Text,View,TextInput,Button} from 'react-native';export default class ShowByNumber extends Component {    static navigationOptions={        title: 'Buses',        };    render(){        return(        <View>        <Text>Your Search</Text>        </View>        );        }    }
