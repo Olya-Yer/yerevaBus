@@ -15,11 +15,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-+  [GMSServices provideAPIKey:@"_AIzaSyCPYfeFMC0IyLdGOD0_vwzao_XCLGCnzmk"];
++  [GMSServices provideAPIKey:@"AIzaSyCPYfeFMC0IyLdGOD0_vwzao_XCLGCnzmk"];
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"test1"
                                                initialProperties:nil
