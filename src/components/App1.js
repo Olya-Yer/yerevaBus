@@ -92,31 +92,53 @@ busesNumbers=()=>{
 }
 render() {
     console.log(this.state);
-
-    return (  
-        <View scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
-        <MapView 
-          region={this.state.initialPosition}
-          showsUserLocation={true}
-          followUserLocation={true}
-          showsMyLocationButton={true}
-            style={styles.map1}>
-                      <MapView.Marker
-            coordinate={this.state.markerPosition}>
-            <View style={styles.radius}>
-                <View style={styles.marker}>
+    if(Platform.OS === 'android'){
+     return (      
+            <View scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
+            <MapView 
+            region={this.state.initialPosition}
+            showsUserLocation={true}
+            followUserLocation={true}
+            showsMyLocationButton={true}
+                style={styles.map1}>
+                        <MapView.Marker
+                coordinate={this.state.markerPosition}>
+                <View style={styles.radius}>
+                    <View style={styles.marker}>
+                    </View>
                 </View>
-               
+            </MapView.Marker>
+            </MapView>
+            <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
+            </View>       
+     );
+    }
+    else if (Platform.OS === 'ios'){
+     return (  
+            <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
+            <MapView 
+            region={this.state.initialPosition}
+            showsUserLocation={true}
+            followUserLocation={true}
+            showsMyLocationButton={true}
+                style={styles.map}>
+                        <MapView.Marker
+                coordinate={this.state.markerPosition}>
+                <View style={styles.radius}>
+                    <View style={styles.marker}>
+                    </View>
+                
 
-            </View>
-          </MapView.Marker>
-        </MapView>
+                </View>
+            </MapView.Marker>
+            </MapView>
 
-        <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
-        </View>
-  
-        
-    );
+            <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
+            </ScrollView>
+     );
+    }
+
+
     }
 }
 
