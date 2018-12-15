@@ -14,6 +14,7 @@ import FromInput from './FromInput';
 import MapView from 'react-native-maps';
 import { StackNavigator } from 'react-navigation';
 import ShowOnMap from './ShowOnMap';
+import SplashScreen from 'react-native-splash-screen';
 
 import ShowByNumber from './ShowByNumber';
 import styles from './Styles';
@@ -42,6 +43,7 @@ constructor(props){
 }
 watchID: ?number = null
 componentDidMount(){
+    
     navigator.geolocation.getCurrentPosition((position) =>{
        console.log(position);
         this.setState({initialPosition: {
@@ -66,7 +68,7 @@ componentDidMount(){
     },
 );
     
-    //SplashScreen.hide();
+    SplashScreen.hide();
     this.props.navigation.setParams({handleButton:this.busesNumbers})
 };
 
