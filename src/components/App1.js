@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform,Button,TouchableHighlight,StatusBar, Dimensions,StyleSheet, Text, View, TextInput} from 'react-native';
+import {Platform,Button,TouchableHighlight,StatusBar,ScrollView, Dimensions,StyleSheet, Text, View, TextInput} from 'react-native';
 import ToInput from './ToInput';
 import ToSearchButton from './ToSearchButton';
 import UsersMap from './UsersMap';
@@ -25,7 +25,7 @@ const SCREEN_WIDTH = width
 const ASPECT_RATIO= width/height
 const LATTITUDE_DELTA= 0.0922
 const LONGTITUDE_DELTA=LATTITUDE_DELTA*ASPECT_RATIO
-export default class App1 extends Component<Props> {
+export default class App1 extends Component<props>{
 
 constructor(props){
     super(props);
@@ -45,7 +45,6 @@ constructor(props){
 watchID: ?number = null
 componentDidMount(){
     navigator.geolocation.getCurrentPosition((position) =>{
-       console.log(position);
         this.setState({initialPosition: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -57,7 +56,6 @@ componentDidMount(){
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-       console.log(position);
       this.setState({markerPosition: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -82,6 +80,8 @@ static navigationOptions =({navigation})=>{
             color: "black",
             fontSize:20,
             marginLeft:0,
+            alignItems: 'center',
+            justifyContent: 'center'
             },
         headerRight: <Button onPress={()=>params.handleButton()} title='Buses' color="black" />
     }
@@ -91,10 +91,12 @@ busesNumbers=()=>{
     this.props.navigation.navigate('Forth')
 }
 render() {
-    console.log(this.state);
 
     return (
-        <View style={styles.container}>
+        
+        
+        <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
+
         <MapView 
             
           region={this.state.initialPosition}
@@ -112,8 +114,11 @@ render() {
             </View>
           </MapView.Marker>
         </MapView>
+
         <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
-        </View>
+        </ScrollView>
+  
+        
     );
     }
 }

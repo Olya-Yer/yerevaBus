@@ -3,7 +3,7 @@ import {View , StyleSheet,Button} from 'react-native';
 import MapView from 'react-native-maps';
 import styles from './Styles';
 
-export default class markOnMap extends Component<Props>{
+export default class markOnMap extends Component{
     static navigationOptions =({navigation})=>{
         const{params={}}=navigation.state
             return{
@@ -51,7 +51,6 @@ export default class markOnMap extends Component<Props>{
               });
          }
          else{
-            console.log("999",this.props.navigation.state.params.status)
             this.setState({
                 toMarker: region,               
               });
@@ -68,9 +67,7 @@ export default class markOnMap extends Component<Props>{
             this.props.navigation.navigate('First')
         }
     }
-     onMapPress(e) {
-        console.log(e.nativeEvent.coordinate.longitude,e.nativeEvent.coordinate.latitude);
-      
+     onMapPress(e) {      
         let region = {
           latitude:       e.nativeEvent.coordinate.latitude,
           longitude:      e.nativeEvent.coordinate.longitude,
@@ -87,7 +84,7 @@ render(){
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
                 }}
-                style={styles.map}
+                style={styles.map1}
                 onPress={this.onMapPress.bind(this)}>
                 <MapView.Marker coordinate={this.state.fromMarker} 
 			pinColor='green'/>

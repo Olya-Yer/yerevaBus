@@ -4,7 +4,7 @@ import ToInput2 from './ToInput2';
 import ToSearchButton2 from './ToSearchButton2';
 import FromInput2 from './FromInput2';
 
-const data=[{key:1},{key:2},{key:3},{key:4},{key:5},{key:6}];
+const data=[{key:1},{key:2},{key:3},{key:4},{key:5},{key:6},{key:1},{key:2},{key:3},{key:4},{key:5},{key:6},{key:1},{key:2},{key:3},{key:4},{key:5},{key:6},{key:1},{key:2},{key:3},{key:4},{key:5},{key:6}];
 const numColumns=3;
 const formatData = (data) => {
  var i=0;
@@ -18,7 +18,7 @@ data.splice(i, 0, "random")
 
 };
 
-export default class ResultPage extends Component<Props>{
+export default class ResultPage extends Component{
     static navigationOptions={
         title: 'Result',
          headerTitleStyle: {

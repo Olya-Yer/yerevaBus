@@ -3,7 +3,7 @@ import {AppRegistry,TouchableHighlight,Dimensions,StyleSheet, Text, View,TextInp
 import ToSearchButton from './ToSearchButton';
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default class FromInput2 extends Component<Props>{
+export default class FromInput2 extends Component{
     constructor(){
         super();
         this.state= {

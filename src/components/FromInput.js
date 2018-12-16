@@ -1,26 +1,22 @@
 ﻿import React, {Component} from 'react';
-import {AppRegistry,TouchableHighlight,Dimensions,StyleSheet, Text, View,TextInput} from 'react-native';
-import ToSearchButton from './ToSearchButton';
+import {TouchableHighlight, Text, View,TextInput, ScrollView} from 'react-native';
 import Geocoder from  'react-native-geocoding';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from './Styles';
+import Result from './Result';
+import {connect} from  'react-redux';
+import {searchByNames} from '../actions/routes';
 
-
-
-
-export default class FromInput extends Component<Props>{
+class FromInput extends Component{
     constructor(props){
         super();
         this.state= {
-            From:"Current Location",
+            From:"",
             To:"",
             fr:"from",
-            to:"to",
+            to:"",
             currentStreet: "",
-            initialPosition:{
-                latitude:0,
-                longitude:0,
-             },
+            initialPosition:"",
             fromMarker:{
                 latitude:0,
                 longitude:0,
@@ -31,86 +27,108 @@ export default class FromInput extends Component<Props>{
             },
             status: 0,
             showCancel: false, 
-            cancelStatus: 0
+            cancelStatus: 0,
+            showCancel2: false, 
+            cancelStatus2: 0,
+            resultStatus:0,
+            to_render_once:0,
          }
          this.getData = this.getData.bind(this)
          this.goToMark=this.goToMark.bind(this)
          this.goToMark2=this.goToMark2.bind(this)
-         this.toggleCancel=this.toggleCancel.bind(this)
-         this.checkBlur=this.checkBlur.bind(this)
+         this.toggleCancel1=this.toggleCancel1.bind(this)
+         this.checkBlur1=this.checkBlur1.bind(this)
+         this.handelerChange1=this.handelerChange1.bind(this)
+         this.toggleCancel2=this.toggleCancel2.bind(this)
+         this.checkBlur2=this.checkBlur2.bind(this)
+         this.handelerChange2=this.handelerChange2.bind(this)
+         this.removeResult=this.removeResult.bind(this)
+
      }
-
-
-     
-
-     componentWillReceiveProps(nextProps){
-        this.getData(this.props.markerPosition);
+     componentWillReceiveProps(){
+        if(this.state.to_render_once<3){
+            this.getData(this.props.markerPosition);
+            this.getData2(this.props.markerPosition)
+        }
         this.setState({
-            initialPosition:this.props.markerPosition
+            to_render_once:this.state.to_render_once+1,
         })
+      
      }
+     getData2(arg){
+        Geocoder.setApiKey('AIzaSyCPYfeFMC0IyLdGOD0_vwzao_XCLGCnzmk');
+        Geocoder.getFromLatLng(arg.latitude,arg.longitude).then(
+            json=>{
+                var address_component = json.results[0].address_components;
+                var str = address_component[0].short_name.replace("/", "."); 
+                var number="";
+
+                for (i=0;i<address_component.length;i++){
+                    str=address_component[i].short_name
+                    str1= address_component[i].short_name.replace("/", ".")
+                    if (!isNaN(str1) || (str.length<5)){
+                        var number=address_component[0].short_name;
+                    }
+                    else{
+                        this.setState({
+                            initialPosition: address_component[i].short_name + " " + number,
+                        }) ;
+                        break;
+                    }  
+                }
+                error =>{
+                    alert(error);
+                }
+            } 
+                     
+        )
+
+    }
      getData(arg)
      {
          Geocoder.setApiKey('AIzaSyCPYfeFMC0IyLdGOD0_vwzao_XCLGCnzmk');
          Geocoder.getFromLatLng(arg.latitude,arg.longitude).then(
              json=>{
-                console.log("------1-----",json.results[0].address_components);
                 var address_component = json.results[0].address_components;
-                console.log("------2-----",address_component[0].short_name);  
-                var str = address_component[0].short_name.replace("/", ".");    
+                var str = address_component[0].short_name.replace("/", ".");   
+                console.log("--44--",json.results ) 
+                var number="";
                 if (this.state.status==0){
-                    if (!isNaN(str)){
-                        console.log("------6-----", typeof (address_component[0].short_name))
-                        str=str = address_component[1].short_name.replace("/", "."); 
-                        if (!isNaN(str)){
-                            this.setState({
-                                From: address_component[2].short_name+" "+address_component[0].short_name,
-                                fromMarkerr: arg,
-                            }) ;
+                    for (i=0;i<address_component.length;i++){
+                        str=address_component[i].short_name
+                        str1= address_component[i].short_name.replace("/", ".")
+                        if (!isNaN(str1) || (str.length<5)){
+                            var number=address_component[0].short_name;
                         }
-                        else {
+                        else{
                             this.setState({
-                                From: address_component[1].short_name+" "+address_component[0].short_name,
-                                fromMarker: arg,
+                                From: address_component[i].short_name + " " + number,
+                                currentStreet: address_component[i].short_name + " " + number,
+                                fromMarker:arg, 
                             }) ;
-                        }     
+                            break;
+                        }  
                     }
-                    
-                    else{
-                        this.setState({
-                            From: address_component[0].short_name,
-                            fromMarker:arg, 
-                        }) ;
-                    }  
-                    console.log("------7-----", this.state.marker)            
                     error =>{
                         alert(error);
                     }
                 }  
                 else{
-                    if (!isNaN(str)){
-                        str=str = address_component[1].short_name.replace("/", "."); 
-                        if (!isNaN(str)){
-                            this.setState({
-                                to: address_component[2].short_name+" "+address_component[0].short_name,
-                                toMarkerr: arg,
-                            }) ;
+                    for (i=0;i<address_component.length;i++){
+                        console.log(i,address_component.length)
+                        str=address_component[i].short_name
+                        str1= address_component[i].short_name.replace("/", ".")
+                        if (!isNaN(str1) || (str.length<5)){
+                            var number=address_component[0].short_name;
                         }
-                        else {
+                        else{
                             this.setState({
-                                to: address_component[1].short_name+" "+address_component[0].short_name,
-                                toMarker: arg,
+                                To: address_component[i].short_name + " " + number,
+                                toMarker:arg, 
                             }) ;
-                        }     
-                    }
-                    
-                    else{
-                        this.setState({
-                            to: address_component[0].short_name,
-                            toMarker:arg, 
-                        }) ;
-                    }  
-                    console.log("------7-----", this.state.marker)            
+                            break;
+                        }  
+                    } 
                     error =>{
                         alert(error);
                     }
@@ -121,12 +139,20 @@ export default class FromInput extends Component<Props>{
      }
 
      checkDestination(){
+         
          if(this.state.To==""){
              alert("choose destination")
          }
          else{
-            this.props.navigation.navigate('Second', {To:this.state.To, From:this.state.From} )
-
+            this.setState({
+                resultStatus:1
+            })
+            const args={
+                from: this.state.From,
+                to: this.state.To
+            }
+            console.log("trigred action",args)
+            this.props.searchByNames(args)
          }
      }
      goToMark(){
@@ -143,15 +169,12 @@ export default class FromInput extends Component<Props>{
 
         });
     }
-    componentDidUpdate(){
-        this.toggleCancel
-    }
+ 
     
-    toggleCancel() {
-        console.log("yyyy")
+    toggleCancel1() {
         if(this.state.From!=""){
             this.setState({
-                showCancel: !this.state.showCancel,
+                showCancel: true,
                 cancelStatus:1,
             });
         }
@@ -163,41 +186,113 @@ export default class FromInput extends Component<Props>{
         }
         
     }
-    checkBlur(){
+    handelerChange1(text){
+        this.setState({From:text},function(){
+            this.toggleCancel1()
+        });
+
+    }
+    checkBlur1(){
         if(this.state.cancelStatus==1){
             this.setState({
-                showCancel: !this.state.showCancel,
+                showCancel: false,
                 cancelStatus:0,
+            });
+        }
+        if (this.state.From==""){
+            this.setState({
+                From:this.state.initialPosition
+            })
+        }
+        
+        
+    }
+
+    _renderCancel1() {
+        if (this.state.showCancel) {
+            return (
+                <View style={styles.onMap3}>
+                    <Icon name="clear" size={12} color="#f8f8ff" style={styles.onMap4}
+                    onPress={()=>this.setState({From:""})}/>
+                </View>
+            );
+        } 
+        else {
+            return null;
+        }
+    }
+    toggleCancel2() {
+        if(this.state.To!=""){
+            this.setState({
+                showCancel2: true,
+                cancelStatus2:1,
+            });
+        }
+        else {
+            this.setState({
+                showCancel2: false,
+                cancelStatus2:0,
+            });
+        }
+        
+    }
+    handelerChange2(text){
+        this.setState({To:text},function(){
+            this.toggleCancel2()
+        });
+    }
+    checkBlur2(){
+        if(this.state.cancelStatus2==1){
+            this.setState({
+                showCancel2: false,
+                cancelStatus2:0,
             });
         }
         
         
     }
 
-    _renderCancel() {
-        if (this.state.showCancel) {
+    _renderCancel2() {
+        if (this.state.showCancel2) {
             return (
-                <View style={styles.onMap3}>
-                    <Icon name="clear" size={12} color="#f8f8ff" style={styles.onMap4}/>
+                <View style={styles.onMap5}>
+                    <Icon name="clear" size={12} color="#f8f8ff" style={styles.onMap4}
+                    onPress={()=>this.setState({To:""})}/>
                 </View>
             );
         } else {
             return null;
         }
     }
+    _renderResult(){
+        if(this.state.resultStatus==1){
 
-    
+            return(
+                <View style={styles.container2}>
+               
+                    <Result navigation={this.props.navigation} removeResult={this.removeResult.bind(this)}/>
+                </View>
+            )
+        }
+    }
+    removeResult(){
+        this.setState({
+            resultStatus:0
+        })
+    }
       render (){
           return (
+            
           <View style={styles.textInputContainer}>
             <View style={styles.textInputContainer2}>
                 <Text style={styles.text}>From:</Text>
                 <TextInput style={styles.textInput} placeholder="Current Location" 
                     value={this.state.From}
-                    onFocus={this.toggleCancel}
-                    onBlur={this.checkBlur}
+                    onFocus={this.toggleCancel1}
+                    onBlur={this.checkBlur1}
                     onChangeText=
-                    {(From)=>this.setState({From})}>
+                    {this.handelerChange1}
+                    >
                 </TextInput> 
                 <TouchableHighlight style={styles.onMapBorder1}>
                     <Icon name="location-on" 
@@ -205,15 +300,17 @@ export default class FromInput extends Component<Props>{
                             style={styles.onMap1}
                             onPress={this.goToMark.bind(this)}/>
                 </TouchableHighlight>
-                {this._renderCancel()} 
+                {this._renderCancel1()} 
 
                 
             </View>
             <View style={styles.textInputContainer1}>
                 <Text style={styles.text1}>To:</Text>
                 <TextInput style={styles.textInput1} placeholder="where to?" 
-                    value={this.state.to}
-                    onChangeText={(To) => this.setState({To})}>                               
+                    value={this.state.To}
+                    onFocus={this.toggleCancel2}
+                    onBlur={this.checkBlur2}
+                    onChangeText={this.handelerChange2}>                            
                 </TextInput> 
                 <TouchableHighlight style={styles.onMapBorder2}>
 
@@ -222,9 +319,8 @@ export default class FromInput extends Component<Props>{
                         style={styles.onMap}
                         onPress={this.goToMark2.bind(this)}/>
                 </TouchableHighlight>
-                <View style={styles.onMap5}>
-                    <Icon name="clear" size={12} color="#f8f8ff" style={styles.onMap4}/>
-                </View>
+                {this._renderCancel2()} 
+                
             </View>
             <View style={styles.search}>
                 <TouchableHighlight onPress={this.checkDestination.bind(this)} underlayColor="transparent">
@@ -233,7 +329,18 @@ export default class FromInput extends Component<Props>{
                         </View>
                 </TouchableHighlight>
             </View>
+            {this._renderResult()}
+
         </View>
         )
        }
    } 
+   function mapStateToProps(state){
+       return {
+           busRoutesReducer: state.BusRoutes
+       }
+   }
+   
+   
+export default connect(mapStateToProps,{searchByNames})(FromInput);
+
