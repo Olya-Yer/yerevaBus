@@ -89,15 +89,25 @@ const styles = StyleSheet.create({
         bottom: 0,
         width:"65%", 
     },
-    textInputContainer1: {      
-        backgroundColor: '#f8f8ff',
-        height: 50,
-        borderWidth: 0,
-        borderWidth: 2,
-        borderRadius:20,
-        width:"101%" ,
-        borderColor: 'grey',
-        flexDirection:'row'
+    textInputContainer1: {
+        ...Platform.select({
+            android: {      
+                backgroundColor: '#f8f8ff',
+                height: 50,
+                width:"100%" ,
+                flexDirection:'row'
+            },
+            ios: {
+                backgroundColor: '#f8f8ff',
+                height: 50,
+                borderWidth: 0,
+                borderWidth: 2,
+                borderRadius:20,
+                width:"100%" ,
+                borderColor: 'grey',
+                flexDirection:'row'
+            },
+        }),
     },
     text1:{
         top: 12.5,
@@ -208,13 +218,14 @@ const styles = StyleSheet.create({
             android: {
               flex:0,
               width:"100%",
-             height:"30%",
+             height:"28%",
              backgroundColor:"#f8f8ff",
              alignItems:'center',
              justifyContent:'center',
              borderRadius:20,
              borderColor:"grey",
              borderWidth:2
+             
             },
             ios: {
                 flex:0,
