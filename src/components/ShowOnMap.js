@@ -65,7 +65,6 @@ export default class ShowByNumber extends Component {
             )
     
         }
-         getData(arg)
     render(){
         return(
         <View style={styles.container}>

@@ -118,7 +118,7 @@ data.splice(i, 0, "random")
                 </View>
                 <ScrollView scrollEnabled={true}> 
                 <FlatList style={styles.flatcontainer}
-                dt={formatData(dt)}
+                data={formatData(dt)}
                 
                 renderItem={this.renderItem}
                 numColumns={numColumns}
