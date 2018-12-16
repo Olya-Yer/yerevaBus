@@ -7,6 +7,8 @@ import {connect} from  'react-redux';
 
 
 const data=[{key:1},{key:2},{key:3},{key:4},{key:3},{key:4},{key:5},{key:6},{key:4},{key:5}];
+// const data3=[];
+
 const numColumns=3;
 const formatData = (data) => {
  var i=0;
@@ -21,17 +23,28 @@ data.splice(i, 0, "random")
 };
 
  class Result extends Component{
- 
-    renderItem=({item,index})=>{
 
+        constructor(props){
+            super();
+        this.state={
+            enableScrollViewScroll:true,
+            data:[],
+            data2:[]
+        }
+        this.renderBusListArray = this.renderBusListArray.bind(this)
+    }
+
+     
+    renderItem=({item,index})=>{
+        console.log("renderItem",item)
            if (index%3==0){
                return <View style ={styles.bar4}>
-                            <Text style={styles.timestyle}>{item}</Text>
+                            <Text style={styles.timestyle}>{item.key}</Text>
                          </View>
                          }
           else if(index%3==1){
                return <View style ={styles.bar5}>
-                            <Text style={styles.Busstyle}>{item}</Text>
+                            <Text style={styles.Busstyle}>{item.key}</Text>
                          </View>
                          }
            else {
@@ -43,24 +56,17 @@ data.splice(i, 0, "random")
             
            
         };
-        constructor(props){
-            super();
-        this.state={
-            enableScrollViewScroll:true,
-            data:[]
-        }
+    componentWillReceiveProps(){
+        // if(_routes !== this.props.busRoutesReducer){
+        // }
+        this.renderBusListArray()   
+
     }
 
-    render(){
-        // console.log("--33--",Object.keys(this.props.busRoutesReducer).length);
-        // console.log("--55--",test.length);
+    renderBusListArray(){
+        let result = []
+        console.log("--111--",this.props.busRoutesReducer)
         var k=Object.keys(this.props.busRoutesReducer).length
-        for (i in this.props.busRoutesReducer){
-            
-            console.log("--22--",this.props.busRoutesReducer[i])
-            this.state.data.push(this.props.busRoutesReducer[i])
-
-        }
         var data2 = Array.apply(null, Array(2*k));
         console.log("--213--",data2)
         for (i=0;i<data2.length;i++){
@@ -74,12 +80,23 @@ data.splice(i, 0, "random")
             j+=2
         }
         console.log("--213--",data2)
-        Object.assign({}, data2);
-        console.log("--213--",data2)
+        data2.map((item,key)=>{
+            return (
+                result.push({"key":item})
+            )
+        })
+        console.log("result--",result)
+        this.setState({
+            data2:result
+        })
 
+    }
 
-
-
+    
+    render(){
+        
+        const dt = this.state.data2;
+        console.log("--dt--",dt,this.state.data2)
         return(
             <View style={styles.container1}>
                  <TouchableHighlight style={styles.button1}>
@@ -101,7 +118,7 @@ data.splice(i, 0, "random")
                 </View>
                 <ScrollView scrollEnabled={true}> 
                 <FlatList style={styles.flatcontainer}
-                data2={formatData(data2)}
+                dt={formatData(dt)}
                 
                 renderItem={this.renderItem}
                 numColumns={numColumns}
