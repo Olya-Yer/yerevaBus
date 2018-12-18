@@ -39,35 +39,34 @@ const styles = StyleSheet.create({
   
     },
     textInputContainer: {
-      
         ...Platform.select({
-            android: {   
-           backgroundColor: '#f8f8ff',
-           height: 140,
-           top: 15,
-           borderWidth: 0,
-           left:5,
-           borderWidth: 2,
-           borderRadius:20,
-           width:300 ,
-           borderColor: 'grey',
-           flex:0,
-           flexDirection:'column'
-            },
-             ios:{
+         android: {   
         backgroundColor: '#f8f8ff',
-        height: 50,
+        height: 140,
         top: 15,
         borderWidth: 0,
         left:5,
         borderWidth: 2,
         borderRadius:20,
-        width:"85%" ,
+        width:300 ,
         borderColor: 'grey',
         flex:0,
         flexDirection:'column'
-    },
-}),
+         },
+          ios:{
+            backgroundColor: '#f8f8ff',
+            height: 50,
+            top: 15,
+            borderWidth: 0,
+            left:5,
+            borderWidth: 2,
+            borderRadius:20,
+            width:"85%" ,
+            borderColor: 'grey',
+            flex:0,
+            flexDirection:'column'
+          },
+        }),
 
     },
     text:{
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         width:"65%", 
     },
-    textInputContainer1: {      
+    textInputContainer1: {
         ...Platform.select({
             android: {      
                 backgroundColor: '#f8f8ff',
@@ -98,17 +97,18 @@ const styles = StyleSheet.create({
                 width:"100%" ,
                 flexDirection:'row'
             },
-            ios: {        backgroundColor: '#f8f8ff',
-        height: 50,
-        borderWidth: 0,
-        borderWidth: 2,
-        borderRadius:20,
-        width:"101%" ,
-        borderColor: 'grey',
-        flexDirection:'row'
+            ios: {
+                backgroundColor: '#f8f8ff',
+                height: 50,
+                borderWidth: 0,
+                borderWidth: 2,
+                borderRadius:20,
+                width:"100%" ,
+                borderColor: 'grey',
+                flexDirection:'row'
+            },
+        }),
     },
-}),
-},
     text1:{
         top: 12.5,
         fontSize: 20,
@@ -213,35 +213,35 @@ const styles = StyleSheet.create({
 
     },
     
-    search:{    
-            ...Platform.select({
-        android: {
-          flex:0,
-          width:"100%",
-         height:"28%",
-         backgroundColor:"#f8f8ff",
-         alignItems:'center',
-         justifyContent:'center',
-         borderRadius:20,
-         borderColor:"grey",
-         borderWidth:2
-         
-        },
-        ios: {
-       
-        flex:0,
-        width:"12%",
-        height:"200%",
-        backgroundColor:"#f8f8ff",
-        alignItems:'center',
-        justifyContent:'center',
-        left:"103%",
-        bottom:97,
-        borderRadius:20,
-        borderColor:"grey",
-        borderWidth:2
-    }
-})
+    search:{
+        ...Platform.select({
+            android: {
+              flex:0,
+              width:"100%",
+             height:"28%",
+             backgroundColor:"#f8f8ff",
+             alignItems:'center',
+             justifyContent:'center',
+             borderRadius:20,
+             borderColor:"grey",
+             borderWidth:2
+             
+            },
+            ios: {
+                flex:0,
+                width:"12%",
+                height:"200%",
+                backgroundColor:"#f8f8ff",
+                alignItems:'center',
+                justifyContent:'center',
+                left:"103%",
+                bottom:97,
+                borderRadius:20,
+                borderColor:"grey",
+                borderWidth:2
+            }
+        })
+
     },
     container1: {
         flex: 1,  
@@ -312,11 +312,10 @@ const styles = StyleSheet.create({
         },
     timestyle:{
         fontWeight: "bold",
-        left:8,
-        color: "red",
+        left:10,
+        color: "black",
         top:5,
         height:30,
-        fontSize:5,
         },
     Busstyle:{
         fontWeight: "bold",
