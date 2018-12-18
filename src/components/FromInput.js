@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from './Styles';
 import Result from './Result';
 import {connect} from  'react-redux';
-import {searchByNames} from '../actions/routes';
+import {searchByNames,seachBuslist} from '../actions/routes';
 
 class FromInput extends Component{
     constructor(props){

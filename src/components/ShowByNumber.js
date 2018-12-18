@@ -1,8 +1,6 @@
 ﻿import React,{Component} from 'react';
 import {TouchableHighlight, Platform,FlatList, StyleSheet,Dimensions,Text,View,TextInput,Button} from 'react-native';
-import ToInput from './ToInput';
-import ToSearchButton from './ToSearchButton';
-import FromInput from './FromInput';
+
 import {connect} from  'react-redux';
 import {seachBuslist,getBusTrack} from '../actions/routes';
 import Icon from "react-native-vector-icons/MaterialIcons";
