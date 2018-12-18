@@ -18,3 +18,31 @@ export  function searchByNames(args){
    }
     
 }
+
+export function seachBuslist(){
+    return function(dispatch){
+        axios.get('http://localhost:3000/buses').then((res)=>{
+            console.log("---action---res",res.data.buses),
+            dispatch({
+                type:"buses_search_success",
+                payload:res.data.buses,
+            })
+        }).catch((err)=>{
+            console.log("---2---err",err)
+        })
+       }
+}
+export function getBusTrack(bus_id){
+
+    return function(dispatch){
+        axios.get('http://localhost:3000/buses/busSchedule',{params:{busId:bus_id}}).then((res)=>{
+            console.log("---action---res---",res.data.route),
+            dispatch({
+                type:"buseID_search_success",
+                payload:res.data.route,
+            })
+        }).catch((err)=>{
+            console.log("---2---err",err)
+        })
+       }
+}

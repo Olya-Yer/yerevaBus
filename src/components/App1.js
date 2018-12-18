@@ -7,17 +7,13 @@
  */
 
 import React, {Component} from 'react';
-import {Platform,Button,TouchableHighlight,StatusBar,ScrollView, Dimensions,StyleSheet, Text, View, TextInput} from 'react-native';
-import ToInput from './ToInput';
-import ToSearchButton from './ToSearchButton';
-import UsersMap from './UsersMap';
+import {Button,ScrollView, Dimensions, View,} from 'react-native';
 import FromInput from './FromInput';
 import SplashScreen from 'react-native-splash-screen';
 import MapView from 'react-native-maps';
 import { StackNavigator } from 'react-navigation';
-import ShowOnMap from './ShowOnMap';
-import ResultPage from './ResultPage';
-import ShowByNumber from './ShowByNumber';
+import {connect} from  'react-redux';
+import {seachBuslist} from '../actions/routes';
 import styles from './Styles';
 const {width, height} =Dimensions.get('window')
 const SCREEN_HEIGHT =height
@@ -25,7 +21,8 @@ const SCREEN_WIDTH = width
 const ASPECT_RATIO= width/height
 const LATTITUDE_DELTA= 0.0922
 const LONGTITUDE_DELTA=LATTITUDE_DELTA*ASPECT_RATIO
-export default class App1 extends Component{
+
+class App1 extends Component{
 
 constructor(props){
     super(props);
@@ -88,6 +85,7 @@ static navigationOptions =({navigation})=>{
 }
  
 busesNumbers=()=>{
+    this.props.seachBuslist()
     this.props.navigation.navigate('Forth')
 }
 render() {
@@ -123,5 +121,12 @@ render() {
     }
 }
 
+function mapStateToProps(state){
+    return {
+        busRoutesReducer: state.BusRoutes
+    }
+}
 
+
+export default connect(mapStateToProps,{seachBuslist})(App1);
 

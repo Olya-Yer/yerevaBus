@@ -152,7 +152,6 @@ class FromInput extends Component{
                 from: this.state.From,
                 to: this.state.To
             }
-            console.log("trigred action",args)
             this.props.searchByNames(args)
          }
      }
