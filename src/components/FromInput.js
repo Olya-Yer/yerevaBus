@@ -9,7 +9,7 @@ import {searchByNames} from '../actions/routes';
 
 class FromInput extends Component{
     constructor(props){
-        super();
+        super(props);
         this.state= {
             From:"",
             To:"",
@@ -33,6 +33,7 @@ class FromInput extends Component{
             resultStatus:0,
             to_render_once:0,
          }
+         this.getData2=this.getData2.bind(this)
          this.getData = this.getData.bind(this)
          this.goToMark=this.goToMark.bind(this)
          this.goToMark2=this.goToMark2.bind(this)
@@ -45,10 +46,10 @@ class FromInput extends Component{
          this.removeResult=this.removeResult.bind(this)
 
      }
-     componentWillReceiveProps(){
+     componentWillReceiveProps(nextProps){
         if(this.state.to_render_once<3){
-            this.getData(this.props.markerPosition);
-            this.getData2(this.props.markerPosition)
+            this.getData(nextProps.markerPosition);
+            this.getData2(nextProps.markerPosition)
         }
         this.setState({
             to_render_once:this.state.to_render_once+1,

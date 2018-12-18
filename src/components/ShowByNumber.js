@@ -28,6 +28,14 @@ export default class ResultPage extends Component{
          marginLeft:0,
         },
         };
+    constructor(props){
+            super(props);
+        this.state={
+            enableScrollViewScroll:true,
+            data:[],
+            data2:[]
+        }
+    }
     renderItem=({item,index})=>{
 
         

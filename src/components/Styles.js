@@ -269,10 +269,11 @@ const styles = StyleSheet.create({
         },
     timestyle:{
         fontWeight: "bold",
-        left:10,
-        color: "black",
+        left:8,
+        color: "red",
         top:5,
         height:30,
+        fontSize:5,
         },
     Busstyle:{
         fontWeight: "bold",

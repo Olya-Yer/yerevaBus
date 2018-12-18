@@ -6,9 +6,6 @@ import {connect} from  'react-redux';
 
 
 
-const data=[{key:1},{key:2},{key:3},{key:4},{key:3},{key:4},{key:5},{key:6},{key:4},{key:5}];
-// const data3=[];
-
 const numColumns=3;
 const formatData = (data) => {
  var i=0;
@@ -21,62 +18,74 @@ data.splice(i, 0, "random")
   return data;
 
 };
-
+var count=0
  class Result extends Component{
 
         constructor(props){
-            super();
+            super(props);
         this.state={
             enableScrollViewScroll:true,
             data:[],
-            data2:[]
+            data2:[],
         }
         this.renderBusListArray = this.renderBusListArray.bind(this)
     }
 
      
     renderItem=({item,index})=>{
-        console.log("renderItem",item)
-           if (index%3==0){
-               return <View style ={styles.bar4}>
-                            <Text style={styles.timestyle}>{item.key}</Text>
-                         </View>
-                         }
-          else if(index%3==1){
-               return <View style ={styles.bar5}>
-                            <Text style={styles.Busstyle}>{item.key}</Text>
-                         </View>
-                         }
-           else {
-               index=index-1;
-               return <View style ={styles.bar6}>
-                            <Button onPress={() => this.props.navigation.navigate('Third')} style={styles.Viewstyle} title="View" />
-                          </View>
-                }
-            
-           
-        };
-    componentWillReceiveProps(){
-        // if(_routes !== this.props.busRoutesReducer){
-        // }
-        this.renderBusListArray()   
+        if (count==Object.keys(this.props.busRoutesReducer).length){
+            count=0
+        }
+        if (index%3==0){
+            return <View style ={styles.bar4}>
+                        <Text style={styles.timestyle}>{item.key}</Text>
+                        </View>
+                        }
+        else if(index%3==1){
+            return <View style ={styles.bar5}>
+                        <Text style={styles.Busstyle}>{item.key}</Text>
+                        </View>
+                        }
+        else {
+            index=index-1;
+            count+=1
+            var i=count-1;
+            return <View style ={styles.bar6}>
+                        
+                        <Button onPress={() => this.props.navigation.navigate('Third',{data:this.state.data[i]})} style={styles.Viewstyle} title="View" />
+                        </View>
+            }
+        
+        
+    };
+    componentWillReceiveProps(nextProps){
+        const _routes = nextProps.busRoutesReducer
+
+        if(_routes !== this.props.busRoutesReducer){
+            this.renderBusListArray(_routes)   
+        }
 
     }
 
-    renderBusListArray(){
+    renderBusListArray(routes){
         let result = []
-        console.log("--111--",this.props.busRoutesReducer)
-        var k=Object.keys(this.props.busRoutesReducer).length
+        var k=Object.keys(routes).length
         var data2 = Array.apply(null, Array(2*k));
-        console.log("--213--",data2)
+
         for (i=0;i<data2.length;i++){
             data2[i]=1;
         }
         console.log("--213--",data2)
         j=1
-        for (i in this.props.busRoutesReducer){
-            
-            data2[j]=this.props.busRoutesReducer[i].bus
+        for (i in routes){
+            L=Object.keys(routes[i]).length
+            // this.setState({
+            //     data:[...this.state.data,routes[i]]
+            // })
+            console.log("routes-routes",routes[i])
+            this.state.data.push(routes[i])
+            data2[j]=routes[i].bus
+            data2[j-1]=4*(L-1)+" mins"
             j+=2
         }
         console.log("--213--",data2)
@@ -96,7 +105,7 @@ data.splice(i, 0, "random")
     render(){
         
         const dt = this.state.data2;
-        console.log("--dt--",dt,this.state.data2)
+        console.log("data-data",this.state.data)
         return(
             <View style={styles.container1}>
                  <TouchableHighlight style={styles.button1}>
@@ -107,7 +116,7 @@ data.splice(i, 0, "random")
                 </TouchableHighlight>
                 <View style={styles.barcontainer}>
                     <View style={styles.bar1}>
-                        <Text style={styles.timestyle}>Time</Text>
+                        <Text style={{fontWeight: "bold",left:0, color: "black", top:5, height:30}}> Est.Time</Text>
                     </View>
                     <View style={styles.bar2}>
                         <Text style={styles.Busstyle}>Bus(es)</Text>

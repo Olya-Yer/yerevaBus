@@ -25,7 +25,7 @@ const SCREEN_WIDTH = width
 const ASPECT_RATIO= width/height
 const LATTITUDE_DELTA= 0.0922
 const LONGTITUDE_DELTA=LATTITUDE_DELTA*ASPECT_RATIO
-export default class App1 extends Component<props>{
+export default class App1 extends Component{
 
 constructor(props){
     super(props);
