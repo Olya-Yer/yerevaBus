@@ -92,8 +92,8 @@ busesNumbers=()=>{
 }
 render() {
 
-    return (
-        if(Platform.OS === 'android'){
+  
+        if (Platform.OS === 'android'){
             return (      
                    <View scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
                    <MapView 
