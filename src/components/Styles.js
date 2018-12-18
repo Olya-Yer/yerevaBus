@@ -39,34 +39,35 @@ const styles = StyleSheet.create({
   
     },
     textInputContainer: {
+      
         ...Platform.select({
-         android: {   
+            android: {   
+           backgroundColor: '#f8f8ff',
+           height: 140,
+           top: 15,
+           borderWidth: 0,
+           left:5,
+           borderWidth: 2,
+           borderRadius:20,
+           width:350 ,
+           borderColor: 'grey',
+           flex:0,
+           flexDirection:'column'
+            },
+             ios:{
         backgroundColor: '#f8f8ff',
-        height: 140,
+        height: 50,
         top: 15,
         borderWidth: 0,
         left:5,
         borderWidth: 2,
         borderRadius:20,
-        width:300 ,
+        width:"85%" ,
         borderColor: 'grey',
         flex:0,
         flexDirection:'column'
-         },
-          ios:{
-            backgroundColor: '#f8f8ff',
-            height: 50,
-            top: 15,
-            borderWidth: 0,
-            left:5,
-            borderWidth: 2,
-            borderRadius:20,
-            width:"85%" ,
-            borderColor: 'grey',
-            flex:0,
-            flexDirection:'column'
-          },
-        }),
+    },
+}),
 
     },
     text:{
@@ -84,31 +85,31 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 16,
         left:1,
-        top:-2,
+        top: Platform.OS === 'ios' ? -2 : 5,
         backgroundColor: 'transparent',
         bottom: 0,
         width:"65%", 
     },
-    textInputContainer1: {
+    textInputContainer1: {      
         ...Platform.select({
             android: {      
                 backgroundColor: '#f8f8ff',
                 height: 50,
-                width:"100%" ,
+                width:"99.5%" ,
                 flexDirection:'row'
             },
-            ios: {
-                backgroundColor: '#f8f8ff',
-                height: 50,
-                borderWidth: 0,
-                borderWidth: 2,
-                borderRadius:20,
-                width:"100%" ,
-                borderColor: 'grey',
-                flexDirection:'row'
-            },
-        }),
+            ios: {     
+        backgroundColor: '#f8f8ff',
+        height: 50,
+        borderWidth: 0,
+        borderWidth: 2,
+        borderRadius:20,
+        width:"101%" ,
+        borderColor: 'grey',
+        flexDirection:'row'
     },
+}),
+},
     text1:{
         top: 12.5,
         fontSize: 20,
@@ -213,35 +214,35 @@ const styles = StyleSheet.create({
 
     },
     
-    search:{
-        ...Platform.select({
-            android: {
-              flex:0,
-              width:"100%",
-             height:"28%",
-             backgroundColor:"#f8f8ff",
-             alignItems:'center',
-             justifyContent:'center',
-             borderRadius:20,
-             borderColor:"grey",
-             borderWidth:2
-             
-            },
-            ios: {
-                flex:0,
-                width:"12%",
-                height:"200%",
-                backgroundColor:"#f8f8ff",
-                alignItems:'center',
-                justifyContent:'center',
-                left:"103%",
-                bottom:97,
-                borderRadius:20,
-                borderColor:"grey",
-                borderWidth:2
-            }
-        })
-
+    search:{    
+            ...Platform.select({
+        android: {
+          flex:0,
+          width:"100%",
+         height:"28%",
+         backgroundColor:"#f8f8ff",
+         alignItems:'center',
+         justifyContent:'center',
+         borderRadius:20,
+         borderColor:"grey",
+         borderWidth:2
+         
+        },
+        ios: {
+       
+        flex:0,
+        width:"12%",
+        height:"200%",
+        backgroundColor:"#f8f8ff",
+        alignItems:'center',
+        justifyContent:'center',
+        left:"103%",
+        bottom:97,
+        borderRadius:20,
+        borderColor:"grey",
+        borderWidth:2
+    }
+})
     },
     container1: {
         flex: 1,  
@@ -250,18 +251,29 @@ const styles = StyleSheet.create({
         width:"120%",
         position:'absolute',
         left: -8,
-        top:-28
+        top: Platform.OS === 'ios' ? -28 : 7
         
     },
     container2:{
         flex:0,
         top:-30
     },
-    button1:{   
+    button1:{
+        ...Platform.select({
+            android: {  
+        backgroundColor:"black",
+        width:"8%",
+        alignItems:'center',
+        justifyContent:'center',
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10,
+        borderBottomLeftRadius:-40,
+            },
+            ios: {
         flex:0,
         backgroundColor:"black",
         width:"8%",
-        // height:"8%",
+        //height:"8%",
         alignItems:'center',
         justifyContent:'center',
         alignSelf:"flex-end",
@@ -269,7 +281,8 @@ const styles = StyleSheet.create({
         borderTopRightRadius:10,
         borderBottomLeftRadius:-40,
         
-        // paddingLeft:10
+                    }
+        })
     },
     barcontainer:{
         flex:0,
@@ -312,10 +325,11 @@ const styles = StyleSheet.create({
         },
     timestyle:{
         fontWeight: "bold",
-        left:10,
-        color: "black",
+        left:8,
+        color: "red",
         top:5,
         height:30,
+        fontSize:5,
         },
     Busstyle:{
         fontWeight: "bold",
