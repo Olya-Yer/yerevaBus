@@ -4,13 +4,12 @@ import Geocoder from  'react-native-geocoding';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import styles from './Styles';
 import Result from './Result';
-import axios from 'axios';
+import {connect} from  'react-redux';
+import {searchByNames} from '../actions/routes';
 
-
-
-export default class FromInput extends Component<Props>{
+class FromInput extends Component{
     constructor(props){
-        super();
+        super(props);
         this.state= {
             From:"",
             To:"",
@@ -32,7 +31,9 @@ export default class FromInput extends Component<Props>{
             showCancel2: false, 
             cancelStatus2: 0,
             resultStatus:0,
+            to_render_once:0,
          }
+         this.getData2=this.getData2.bind(this)
          this.getData = this.getData.bind(this)
          this.goToMark=this.goToMark.bind(this)
          this.goToMark2=this.goToMark2.bind(this)
@@ -46,36 +47,36 @@ export default class FromInput extends Component<Props>{
 
      }
      componentWillReceiveProps(nextProps){
-        this.getData(this.props.markerPosition);
-        this.getData2(this.props.markerPosition)
+        if(this.state.to_render_once<3){
+            this.getData(nextProps.markerPosition);
+            this.getData2(nextProps.markerPosition)
+        }
+        this.setState({
+            to_render_once:this.state.to_render_once+1,
+        })
+      
      }
      getData2(arg){
         Geocoder.setApiKey('AIzaSyCPYfeFMC0IyLdGOD0_vwzao_XCLGCnzmk');
         Geocoder.getFromLatLng(arg.latitude,arg.longitude).then(
             json=>{
                 var address_component = json.results[0].address_components;
-                var str = address_component[0].short_name.replace("/", ".");    
-                if (!isNaN(str)){
-                    console.log("------6-----", typeof (address_component[0].short_name))
-                    str=str = address_component[1].short_name.replace("/", "."); 
-                    if (!isNaN(str)){
-                        this.setState({
-                            initialPosition: address_component[2].short_name+" "+address_component[0].short_name,
-                        }) ;
-                    }
-                    else {
-                        this.setState({
-                            initialPosition: address_component[1].short_name+" "+address_component[0].short_name,
-                        }) ;
-                    }     
-                }
-                
-                else{
-                    this.setState({
-                        initialPosition: address_component[0].short_name,
+                var str = address_component[0].short_name.replace("/", "."); 
+                var number="";
 
-                    }) ;
-                }  
+                for (i=0;i<address_component.length;i++){
+                    str=address_component[i].short_name
+                    str1= address_component[i].short_name.replace("/", ".")
+                    if (!isNaN(str1) || (str.length<5)){
+                        var number=address_component[0].short_name;
+                    }
+                    else{
+                        this.setState({
+                            initialPosition: address_component[i].short_name + " " + number,
+                        }) ;
+                        break;
+                    }  
+                }
                 error =>{
                     alert(error);
                 }
@@ -89,14 +90,12 @@ export default class FromInput extends Component<Props>{
          Geocoder.setApiKey('AIzaSyCPYfeFMC0IyLdGOD0_vwzao_XCLGCnzmk');
          Geocoder.getFromLatLng(arg.latitude,arg.longitude).then(
              json=>{
-                console.log("------1-----",json.results[0].address_components);
                 var address_component = json.results[0].address_components;
-                console.log("------2-----",address_component[0].short_name);  
-                var str = address_component[0].short_name.replace("/", ".");    
+                var str = address_component[0].short_name.replace("/", ".");   
+                console.log("--44--",json.results ) 
                 var number="";
                 if (this.state.status==0){
                     for (i=0;i<address_component.length;i++){
-                        console.log(i,address_component.length)
                         str=address_component[i].short_name
                         str1= address_component[i].short_name.replace("/", ".")
                         if (!isNaN(str1) || (str.length<5)){
@@ -111,7 +110,6 @@ export default class FromInput extends Component<Props>{
                             break;
                         }  
                     }
-                    console.log("------7-----", this.state.toMarker)            
                     error =>{
                         alert(error);
                     }
@@ -132,7 +130,6 @@ export default class FromInput extends Component<Props>{
                             break;
                         }  
                     } 
-                    console.log("------7-----", this.state.toMarker)            
                     error =>{
                         alert(error);
                     }
@@ -148,10 +145,15 @@ export default class FromInput extends Component<Props>{
              alert("choose destination")
          }
          else{
-            //  this.props.navigation.navigate('Second', {To:this.state.To, From:this.state.From} )
             this.setState({
                 resultStatus:1
             })
+            const args={
+                from: this.state.From,
+                to: this.state.To
+            }
+            console.log("trigred action",args)
+            this.props.searchByNames(args)
          }
      }
      goToMark(){
@@ -171,8 +173,6 @@ export default class FromInput extends Component<Props>{
  
     
     toggleCancel1() {
-        console.log("yyy",this.state.initialPosition)
-
         if(this.state.From!=""){
             this.setState({
                 showCancel: true,
@@ -180,8 +180,6 @@ export default class FromInput extends Component<Props>{
             });
         }
         else {
-            console.log("xxxx")
-
             this.setState({
                 showCancel: false,
                 cancelStatus:0,
@@ -193,21 +191,19 @@ export default class FromInput extends Component<Props>{
         this.setState({From:text},function(){
             this.toggleCancel1()
         });
-        console.log("FROM=",this.state.From)
 
     }
     checkBlur1(){
-        console.log("yyy",this.state.initialPosition)
         if(this.state.cancelStatus==1){
             this.setState({
                 showCancel: false,
                 cancelStatus:0,
             });
-            if (this.state.From==""){
-                this.setState({
-                    From:this.state.initialPosition
-                })
-            }
+        }
+        if (this.state.From==""){
+            this.setState({
+                From:this.state.initialPosition
+            })
         }
         
         
@@ -221,7 +217,8 @@ export default class FromInput extends Component<Props>{
                     onPress={()=>this.setState({From:""})}/>
                 </View>
             );
-        } else {
+        } 
+        else {
             return null;
         }
     }
@@ -270,11 +267,7 @@ export default class FromInput extends Component<Props>{
     }
     _renderResult(){
         if(this.state.resultStatus==1){
-            axios.get('http://localhost:3000/getBusRoutes',{params:{from:this.state.From,to:this.state.To}}).then((res)=>{
-                console.log("---1---res",res.data.routes)
-            }).catch((err)=>{
-                console.log("---2---err",err)
-            })
+
             return(
                 <View style={styles.container2}>
                
@@ -343,3 +336,12 @@ export default class FromInput extends Component<Props>{
         )
        }
    } 
+   function mapStateToProps(state){
+       return {
+           busRoutesReducer: state.BusRoutes
+       }
+   }
+   
+   
+export default connect(mapStateToProps,{searchByNames})(FromInput);
+

@@ -8,14 +8,15 @@
 
 import React, {Component} from 'react';
 import {Platform,Button,TouchableHighlight,StatusBar,ScrollView, Dimensions,StyleSheet, Text, View, TextInput} from 'react-native';
-
-
+import ToInput from './ToInput';
+import ToSearchButton from './ToSearchButton';
+import UsersMap from './UsersMap';
 import FromInput from './FromInput';
+import SplashScreen from 'react-native-splash-screen';
 import MapView from 'react-native-maps';
 import { StackNavigator } from 'react-navigation';
 import ShowOnMap from './ShowOnMap';
-import SplashScreen from 'react-native-splash-screen';
-
+import ResultPage from './ResultPage';
 import ShowByNumber from './ShowByNumber';
 import styles from './Styles';
 const {width, height} =Dimensions.get('window')
@@ -24,7 +25,7 @@ const SCREEN_WIDTH = width
 const ASPECT_RATIO= width/height
 const LATTITUDE_DELTA= 0.0922
 const LONGTITUDE_DELTA=LATTITUDE_DELTA*ASPECT_RATIO
-export default class App1 extends Component<Props> {
+export default class App1 extends Component{
 
 constructor(props){
     super(props);
@@ -43,9 +44,7 @@ constructor(props){
 }
 watchID: ?number = null
 componentDidMount(){
-    
     navigator.geolocation.getCurrentPosition((position) =>{
-       console.log(position);
         this.setState({initialPosition: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -57,7 +56,6 @@ componentDidMount(){
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-       console.log(position);
       this.setState({markerPosition: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -93,54 +91,59 @@ busesNumbers=()=>{
     this.props.navigation.navigate('Forth')
 }
 render() {
-    console.log(this.state);
-    if(Platform.OS === 'android'){
-     return (      
-            <View scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
-            <MapView 
-            region={this.state.initialPosition}
-            showsUserLocation={true}
-            followUserLocation={true}
-            showsMyLocationButton={true}
-                style={styles.map1}>
-                        <MapView.Marker
-                coordinate={this.state.markerPosition}>
-                <View style={styles.radius}>
-                    <View style={styles.marker}>
-                    </View>
+
+    return (
+        if(Platform.OS === 'android'){
+            return (      
+                   <View scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
+                   <MapView 
+                   region={this.state.initialPosition}
+                   showsUserLocation={true}
+                   followUserLocation={true}
+                   showsMyLocationButton={true}
+                       style={styles.map1}>
+                               <MapView.Marker
+                       coordinate={this.state.markerPosition}>
+                       <View style={styles.radius}>
+                           <View style={styles.marker}>
+                           </View>
+                       </View>
+                   </MapView.Marker>
+                   </MapView>
+                   <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
+                   </View>       
+            );
+           }
+           else if (Platform.OS === 'ios'){
+            return (     
+        
+        <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
+
+        <MapView 
+            
+          region={this.state.initialPosition}
+          showsUserLocation={true}
+          followUserLocation={true}
+          showsMyLocationButton={true}
+            style={styles.map}>
+                      <MapView.Marker
+            coordinate={this.state.markerPosition}>
+            <View style={styles.radius}>
+                <View style={styles.marker}>
                 </View>
-            </MapView.Marker>
-            </MapView>
-            <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
-            </View>       
-     );
+               
+
+            </View>
+          </MapView.Marker>
+        </MapView>
+
+        <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
+        </ScrollView>
+        );
     }
-    else if (Platform.OS === 'ios'){
-     return (  
-            <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled" style={styles.container}>
-            <MapView 
-            region={this.state.initialPosition}
-            showsUserLocation={true}
-            followUserLocation={true}
-            showsMyLocationButton={true}
-                style={styles.map}>
-                        <MapView.Marker
-                coordinate={this.state.markerPosition}>
-                <View style={styles.radius}>
-                    <View style={styles.marker}>
-                    </View>
-                
-
-                </View>
-            </MapView.Marker>
-            </MapView>
-
-            <FromInput navigation={this.props.navigation} markerPosition={this.state.markerPosition}/>
-            </ScrollView>
-     );
-    }
-
-
+  
+        
+    
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿import React,{Component} from 'react';
 import { Platform,FlatList, StyleSheet,Dimensions,Text,View,TextInput,Button} from 'react-native';
-
+import ToInput from './ToInput';
+import ToSearchButton from './ToSearchButton';
 import FromInput from './FromInput';
 
 const data=[{key:1},{key:2},{key:3},{key:4},{key:5},{key:6}];
@@ -17,7 +18,7 @@ data.splice(i, 0, "random")
 
 };
 
-export default class ResultPage extends Component<Props>{
+export default class ResultPage extends Component{
     static navigationOptions={
         title: 'Buses',
          headerTitleStyle: {
@@ -27,6 +28,14 @@ export default class ResultPage extends Component<Props>{
          marginLeft:0,
         },
         };
+    constructor(props){
+            super(props);
+        this.state={
+            enableScrollViewScroll:true,
+            data:[],
+            data2:[]
+        }
+    }
     renderItem=({item,index})=>{
 
         
@@ -157,10 +166,10 @@ bar4:{
     flex:0,
     borderRightWidth:2,
     borderLeftWidth:2,
-   // borderRightColor:'grey',
-    //borderLeftColor:'grey',
+    borderRightColor:'grey',
+    borderLeftColor:'grey',
     borderBottomWidth:2,
-    //borderBottomColor:'grey',
+    borderBottomColor:'grey',
     height:50,
     width:70,
     },
@@ -168,10 +177,10 @@ bar5:{
     flex:0,
     borderRightWidth:2,
     borderLeftWidth:2,
-   // borderRightColor:'grey',
+    borderRightColor:'grey',
     borderLeftColor:'black',
     borderBottomWidth:2,
-    //borderBottomColor:'grey',
+    borderBottomColor:'grey',
     height:50,
     width:250
     },
@@ -179,10 +188,10 @@ bar6:{
     flex:1,
     borderRightWidth:2,
     borderLeftWidth:2,
-    //borderRightColor:'grey',
-    //borderLeftColor:'grey',
+    borderRightColor:'grey',
+    borderLeftColor:'grey',
     borderBottomWidth:2,
-    //borderBottomColor:'grey',
+    borderBottomColor:'grey',
     height:50,
     },
 timestyle:{

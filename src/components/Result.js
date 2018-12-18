@@ -2,10 +2,10 @@ import React,{Component} from 'react';
 import {TouchableHighlight, FlatList, StyleSheet,ScrollView,Text,View,Button} from 'react-native';
 import styles from './Styles';
 import Icon from "react-native-vector-icons/MaterialIcons";
+import {connect} from  'react-redux';
 
 
 
-const data=[{key:1},{key:2},{key:3},{key:4},{key:5},{key:6},{key:7},{key:2},{key:3},{key:4},{key:5},{key:6},{key:1},{key:2},{key:3},{key:4},{key:5},{key:6},{key:7},{key:2},{key:3},{key:4},{key:5},{key:6},{key:4},{key:5}];
 const numColumns=3;
 const formatData = (data) => {
  var i=0;
@@ -18,38 +18,94 @@ data.splice(i, 0, "random")
   return data;
 
 };
+var count=0
+ class Result extends Component{
 
-export default class ResultPage extends Component<Props>{
-    renderItem=({item,index})=>{
-
-        
-           if (index%3==0){
-               return <View style ={styles.bar4}>
-                            <Text style={styles.timestyle}>{item.key}</Text>
-                         </View>
-                         }
-          else if(index%3==1){
-               return <View style ={styles.bar5}>
-                            <Text style={styles.Busstyle}>{item.key}</Text>
-                         </View>
-                         }
-           else {
-               index=index-1;
-               return <View style ={styles.bar6}>
-                            <Button onPress={() => this.props.navigation.navigate('Third')} style={styles.Viewstyle} title="View" />
-                          </View>
-                }
-            
-           
-        };
         constructor(props){
-            super();
+            super(props);
         this.state={
-            enableScrollViewScroll:true
+            enableScrollViewScroll:true,
+            data:[],
+            data2:[],
         }
+        this.renderBusListArray = this.renderBusListArray.bind(this)
     }
 
+     
+    renderItem=({item,index})=>{
+        if (count==Object.keys(this.props.busRoutesReducer).length){
+            count=0
+        }
+        if (index%3==0){
+            return <View style ={styles.bar4}>
+                        <Text style={styles.timestyle}>{item.key}</Text>
+                        </View>
+                        }
+        else if(index%3==1){
+            return <View style ={styles.bar5}>
+                        <Text style={styles.Busstyle}>{item.key}</Text>
+                        </View>
+                        }
+        else {
+            index=index-1;
+            count+=1
+            var i=count-1;
+            return <View style ={styles.bar6}>
+                        
+                        <Button onPress={() => this.props.navigation.navigate('Third',{data:this.state.data[i]})} style={styles.Viewstyle} title="View" />
+                        </View>
+            }
+        
+        
+    };
+    componentWillReceiveProps(nextProps){
+        const _routes = nextProps.busRoutesReducer
+
+        if(_routes !== this.props.busRoutesReducer){
+            this.renderBusListArray(_routes)   
+        }
+
+    }
+
+    renderBusListArray(routes){
+        let result = []
+        var k=Object.keys(routes).length
+        var data2 = Array.apply(null, Array(2*k));
+
+        for (i=0;i<data2.length;i++){
+            data2[i]=1;
+        }
+        console.log("--213--",data2)
+        j=1
+        for (i in routes){
+            L=Object.keys(routes[i]).length
+            // this.setState({
+            //     data:[...this.state.data,routes[i]]
+            // })
+            console.log("routes-routes",routes[i])
+            this.state.data.push(routes[i])
+            data2[j]=routes[i].bus
+            data2[j-1]=4*(L-1)+" mins"
+            j+=2
+        }
+        console.log("--213--",data2)
+        data2.map((item,key)=>{
+            return (
+                result.push({"key":item})
+            )
+        })
+        console.log("result--",result)
+        this.setState({
+            data2:result
+        })
+
+    }
+
+    
     render(){
+        
+        const dt = this.state.data2;
+        console.log("data-data",this.state.data)
         return(
             <View style={styles.container1}>
                  <TouchableHighlight style={styles.button1}>
@@ -60,7 +116,7 @@ export default class ResultPage extends Component<Props>{
                 </TouchableHighlight>
                 <View style={styles.barcontainer}>
                     <View style={styles.bar1}>
-                        <Text style={styles.timestyle}>Time</Text>
+                        <Text style={{fontWeight: "bold",left:0, color: "black", top:5, height:30}}> Est.Time</Text>
                     </View>
                     <View style={styles.bar2}>
                         <Text style={styles.Busstyle}>Bus(es)</Text>
@@ -71,7 +127,7 @@ export default class ResultPage extends Component<Props>{
                 </View>
                 <ScrollView scrollEnabled={true}> 
                 <FlatList style={styles.flatcontainer}
-                data={formatData(data)}
+                data={formatData(dt)}
                 
                 renderItem={this.renderItem}
                 numColumns={numColumns}
@@ -83,3 +139,11 @@ export default class ResultPage extends Component<Props>{
         );
         }
     }
+    function mapStateToProps(state){
+        return {
+            busRoutesReducer: state.BusRoutes
+        }
+    }
+    
+    
+    export default connect(mapStateToProps,{})(Result);
