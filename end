@@ -1,0 +1,35 @@
+[33mcommit d8334f74fa4871475240ff780c338345f07d9584[m[33m ([m[1;36mHEAD -> [m[1;32mandroid-2.0[m[33m)[m
+Author: riyadhmr <riadmohammed34@gmail.com>
+Date:   Sun Dec 16 15:10:27 2018 +0400
+
+    Styling the from-to box beacuse of Shant
+
+[33mcommit 4e4754c8c2750606856c8f4490ce9b2a5bf029cc[m
+Author: riyadhmr <riadmohammed34@gmail.com>
+Date:   Sat Dec 15 18:34:52 2018 +0400
+
+    flash screen added
+
+[33mcommit 39f0a9ae8276bc797e01c9a8f2235ffb7a87ebc1[m
+Author: riyadhmr <riadmohammed34@gmail.com>
+Date:   Sat Dec 15 14:05:59 2018 +0400
+
+    changed the app1 file for both platform
+
+[33mcommit 0ccb34ae0aa2bb0c97970344049dea4e619db7f4[m
+Author: riyadhmr <riadmohammed34@gmail.com>
+Date:   Sat Dec 15 13:40:21 2018 +0400
+
+    the styles work for both ios and android
+
+[33mcommit 618c7cb19a5c4c05cba3b66a8dab18a7ccfee824[m[33m ([m[1;31morigin/android_version[m[33m, [m[1;32mandroid_version[m[33m)[m
+Author: olinka-1993 <olya.yeritspokhyan@gmail.com>
+Date:   Sun Oct 14 14:27:16 2018 +0400
+
+    -implemented onclick on the button
+
+[33mcommit a92e78acc64e7c95d187f3cca93b69f8a13e0692[m
+Author: olinka-1993 <olya.yeritspokhyan@gmail.com>
+Date:   Sun Oct 14 02:00:22 2018 +0400
+
+    first working commit
