@@ -11,13 +11,11 @@ import {Button,ScrollView, Dimensions, View,} from 'react-native';
 import FromInput from './FromInput';
 import SplashScreen from 'react-native-splash-screen';
 import MapView from 'react-native-maps';
-import { StackNavigator } from 'react-navigation';
 import {connect} from  'react-redux';
 import {seachBuslist} from '../actions/routes';
 import styles from './Styles';
 const {width, height} =Dimensions.get('window')
-const SCREEN_HEIGHT =height
-const SCREEN_WIDTH = width
+
 const ASPECT_RATIO= width/height
 const LATTITUDE_DELTA= 0.0922
 const LONGTITUDE_DELTA=LATTITUDE_DELTA*ASPECT_RATIO
@@ -38,9 +36,12 @@ constructor(props){
                 longitude:0
                 }
          }
+         
 }
 watchID: ?number = null
+
 componentDidMount(){
+    
     navigator.geolocation.getCurrentPosition((position) =>{
         this.setState({initialPosition: {
           latitude: position.coords.latitude,

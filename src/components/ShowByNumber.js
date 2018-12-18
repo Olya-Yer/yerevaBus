@@ -88,34 +88,30 @@ var count=0
     };
     
     handelerChange(text){
-        console.log("text",text)
-        this.setState({number:text},function(){
-            console.log("number",this.state.number)
-            if (this.state.number){
-                console.log("reserve_data",this.state.reserve_data)
-                for (i=0;i<this.state.reserve_data.length;i+=3){
-                    console.log("this.state.data3 before equal",this.state.data3)
-                    if (this.state.reserve_data[i].key==Number.parseInt(this.state.number,10)){
-                        console.log("reserve",this.state.reserve_data[i].key)
-                        console.log("reserve i+1",this.state.reserve_data[i+1])
-                        console.log("this.state.data3",this.state.data3)
-                         this.setState({
-                            data3:[...this.state.data3,this.state.reserve_data[i],this.state.reserve_data[i+1]],
-                        })
-                        console.log("data3--",this.state.data3)
-                        
+        this.setState({number:text,data3:[]},function(){
+            var data4=[]
+                for (i=0;i<this.state.reserve_data.length;i++){
+                    if(this.state.reserve_data[i]!="random"){
+                        data4.push(this.state.reserve_data[i])
+                    }
+                }
+            if (this.state.number!=""){
+                
+                for (i=0;i<data4.length;i++){
+                    if (data4[i].key==Number.parseInt(this.state.number,10)){
+                         this.state.data3.push(data4[i])
+                         this.state.data3.push(data4[i+1])                        
                     }
                    
                 }
             }
             else{
-                this.setState({
-                    data3:this.state.reserve_data
-                })
+                this.props.seachBuslist()
             }
             this.setState({
                 data2:this.state.data3
             })
+
         })
     }
 
@@ -125,7 +121,6 @@ var count=0
     }
     componentWillReceiveProps(nextProps){
         const _payload = nextProps.busReducer
-        console.log("-1234-1234",this.props.busReducer.payload)
         if(_payload !== this.props.busReducer){
             this.renderBusListArray(_payload)   
         }
@@ -140,25 +135,21 @@ var count=0
         for (i=0;i<data2.length;i++){
             data2[i]=1;
         }
-        console.log("--213--",data2)
         j=1
         for (i in payload){
               this.setState({
                 data:[...this.state.data,payload[i].bus_id]
             })
-            console.log("payload--",payload[i])
             this.state.data.push(payload[i].bus_id)
             data2[j]=payload[i].bus_type
             data2[j-1]=payload[i].bus_number
             j+=2
         }
-        console.log("--1111--",this.state.data)
         data2.map((item,key)=>{
             return (
                 result.push({"key":item})
             )
         })
-        console.log("result--",result)
         this.setState({
             data2:result,
             reserve_data:result
@@ -182,10 +173,10 @@ var count=0
                     </View>
                 </View>
                 <FlatList style={styles.flatcontainer}
-                data={formatData(this.state.data2)}
-                
-                renderItem={this.renderItem}
-                numColumns={numColumns}
+                    data={formatData(this.state.data2)}
+                    
+                    renderItem={this.renderItem}
+                    numColumns={numColumns}
                 />
             </View>
 
@@ -195,17 +186,12 @@ var count=0
 const styles = StyleSheet.create({
 
     
-  container: {
+container: {
     flex: 1,  
     backgroundColor:'#ffffe0',
-    
-    
-  },
-
-
+},
 barcontainer:{
     flex:0,
-
     backgroundColor:'white',
     flexDirection:'row',
     borderTopWidth:2,
@@ -317,23 +303,14 @@ Busstyle:{
 
 
 text:{
-    width:30,
+    width:53,
     height:30,
     backgroundColor:"white",
     borderWidth:2,
     borderColor:"grey",
-    right:10,
-    textAlign:'center'
-
-    
+    right:3,
+    textAlign:'center'  
 },
-headersearch:{
-    flexDirection:'row'
-}
-
-  
-
-
 
 });
 function mapStateToProps(state){

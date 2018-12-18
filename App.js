@@ -24,9 +24,4 @@ const Navigation = StackNavigator({
     Fifth:{screen: markOnMap}
 });
 
-
-
-
-
-
 export default Navigation;
